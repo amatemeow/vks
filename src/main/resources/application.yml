@@ -1,6 +1,45 @@
 spring:
   application:
     name: vks
+  flyway:
+    baseline-on-migrate: true
+    out-of-order: false
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://${POSTGRES_URL:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:}
+    username: ${POSTGRES_USER:}
+    password: ${POSTGRES_PASSWORD:}
+    maximumPoolSize: 20
+    minimumIdle: 5
+    idleTimeout: 30000
+    poolName: AtamJPAHikariCP
+    maxLifetime: 2000000
+    connectionTimeout: 30000
+    testWhileIdle: true
+    validationQuery: SELECT 1+1;
+  sql:
+    init:
+      platform: postgresql
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+      connection:
+        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+          use_sql: true
+          show_sql: false
+          format_sql: false
+          id:
+            new_generator_mappings: false
+          search:
+            autoregister_listeners: false
+          bytecode:
+            use_reflection_optimizer: false
+
 
 server:
   port: ${VKS_SERVER_PORT:8095}
@@ -23,7 +62,10 @@ vks:
         url: ${VKS_TELEGRAM_PUSH_URL:}
         chat-id: ${VKS_TELEGRAM_PUSH_CHATID:}
   task:
-    scan-source: ${VKS_TASK_SCAN_SOURCE:}
+    scan:
+      mode: ${VK_TASK_SCAN_MODE:SEARCH}
+      source: ${VKS_TASK_SCAN_SOURCE:}
     query: ${VKS_TASK_QUERY:}
+    search-list: ${VKS_TASK_SEARCH_LIST:}
     fresh-interval: ${VKS_TASK_FRESH_INTERVAL:2} #days
     execution-interval: ${VKS_TASK_EXECUTION_INTERVAL:5} #seconds

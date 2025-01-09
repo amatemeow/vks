@@ -1,0 +1,27 @@
+version: "3"
+services:
+  postgres:
+    container_name: vks-postgres
+    image: postgres:17
+    restart: always
+    env_file:
+      - db.env
+    volumes:
+      - vks-pgdata:/var/lib/postgresql/data
+    ports:
+      - 5456:5432
+
+  vkscanner:
+    container_name: vks-service
+    image: vks-service:latest
+    restart: always
+    env_file:
+      - db.env
+      - app.env
+    ports:
+      - 8095:8080
+      - 7095:7000
+
+volumes:
+  vks-pgdata:
+    driver: local
