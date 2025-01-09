@@ -1,0 +1,66 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.9'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'ru.amatemeow'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(11)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+def generatedSourcesDir = "src/generated/java"
+
+sourceSets {
+	generated {
+		java {
+			srcDirs = [generatedSourcesDir]
+		}
+	}
+}
+
+bootJar {
+	archiveFileName = "vkscanner.jar"
+}
+
+jar {
+	enabled = false
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	springBootVersion = '2.7.9'
+	okhttpVersion = '4.12.0'
+	lombokVersion = '1.18.34'
+	jakartaValidationVersion = '3.1.0'
+}
+
+dependencies {
+
+	implementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+	implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+	implementation "org.springframework.boot:spring-boot-starter-validation:${springBootVersion}"
+
+	// validation
+	implementation "jakarta.validation:jakarta.validation-api:${jakartaValidationVersion}"
+
+	// connection
+	implementation "com.squareup.okhttp3:okhttp:${okhttpVersion}"
+
+	// lombok
+	compileOnly "org.projectlombok:lombok:${lombokVersion}"
+	annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+}

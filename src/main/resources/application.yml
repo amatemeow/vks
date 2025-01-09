@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: vks
+
+server:
+  port: ${VKS_SERVER_PORT:8095}
+
+logging:
+  level:
+    ru.amatemeow.vks: ${VKS_LOG_LEVEL:info}
+
+vks:
+  connection:
+    webclient:
+      timeout: ${VKS_WEBCLIENT_TIMEOUT:1000} #msec
+    vk:
+      api-target-version: ${VKS_VK_API_TARGET_VERSION:5.199}
+      api-base-url: ${VKS_VK_API_BASE_URL:https://api.vk.com/method/}
+      auth:
+        key: ${VKS_VK_API_KEY:}
+    telegram:
+      push:
+        url: ${VKS_TELEGRAM_PUSH_URL:}
+        chat-id: ${VKS_TELEGRAM_PUSH_CHATID:}
+  task:
+    scan-source: ${VKS_TASK_SCAN_SOURCE:}
+    query: ${VKS_TASK_QUERY:}
+    fresh-interval: ${VKS_TASK_FRESH_INTERVAL:2} #days
+    execution-interval: ${VKS_TASK_EXECUTION_INTERVAL:5} #seconds
